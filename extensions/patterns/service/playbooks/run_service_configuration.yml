@@ -1,0 +1,19 @@
+---
+# local test:
+# ansible-playbook -i localhost, extensions/experiences/service/playbooks/configure_service.yml  -e 'service_names_str="chronyd colord"' -e service_state=stopped -v
+- name: Configure RHEL services
+  hosts: all
+  # gather_facts: false
+  # connection: local
+  become: true
+
+  roles:
+    - name: ansible.experience_demo.service
+      vars:
+        service_names: "{{ service_names_str | split }}"
+      # vars:
+      #   service_names:
+      #     - chronyd
+      #     - colord
+      #   service_state: started
+      #   service_enabled: true
