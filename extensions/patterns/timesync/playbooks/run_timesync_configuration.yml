@@ -3,7 +3,7 @@
   hosts: all
   become: true
   roles:
-    - role: configure_timesync
+    - role: community.rhel_ops.configure_timesync
   # vars:
   #   restart_chronyd_service: true
   #   user_ntp_servers:

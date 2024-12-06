@@ -41,9 +41,9 @@ Here is an example of how to use the `configure_timesync` role:
 - hosts: all
   become: true
   roles:
-    - role: configure_timesync
+    - role: community.rhel_ops.configure_timesync
       vars:
         user_ntp_servers:
-          - "time.example.com"
+          - hostname: "time.example.com"
         user_timezone: "America/New_York"
 ```
