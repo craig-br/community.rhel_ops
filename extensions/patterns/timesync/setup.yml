@@ -12,9 +12,9 @@ controller_labels:
 # Execution Environments
 #
 controller_execution_environments:
-  - name: apd-ee-25-rhel
+  - name: rhel-operations-ee
     description: Allow running RHEL Ansible Pattern demo. Based on apd-ee-25.
-    image: quay.io/justinc1_github/apd-ee-25-experience:latest
+    image: quay.io/portal_mvp_patterns/community-rhel-ops-ee
     pull: always
 
 # Projects
