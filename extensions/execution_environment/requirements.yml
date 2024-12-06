@@ -1,6 +1,7 @@
 ---
 collections:
-  # - name: ansible.experience_demo
-  - name: https://github.com/justinc1/experience_demo.git
-    type: git
-    version: feature-service-aae
+  - name: community.rhel_ops
+    version: 0.1.0
+  # - name: https://github.com/ansible-collections/community.rhel_ops.git
+  #   type: git
+  #   version: main
