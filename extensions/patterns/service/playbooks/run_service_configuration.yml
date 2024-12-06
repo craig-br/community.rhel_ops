@@ -8,7 +8,7 @@
   become: true
 
   roles:
-    - name: ansible.experience_demo.service
+    - name: community.rhel_ops.service
       vars:
         service_names: "{{ service_names_str | split }}"
       # vars:

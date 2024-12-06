@@ -2,7 +2,7 @@
 # Labels
 #
 controller_labels:
-  - name: ansible.experience_demo
+  - name: community.rhel_ops
     organization: "{{ organization | default('Default') }}"
   - name: rhel_pattern
     organization: "{{ organization | default('Default') }}"
@@ -40,7 +40,7 @@ controller_templates:
     ask_variables_on_launch: false
     survey_enabled: true
     labels:
-      - ansible.experience_demo
+      - community.rhel_ops
       - rhel_pattern
       - run_service_configuration
     # pattern.path - path to setup.yml, it is set by ansible-pattern-loader repo
