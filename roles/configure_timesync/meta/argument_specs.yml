@@ -1,0 +1,36 @@
+---
+argument_specs:
+  main:
+    short_description: Configure time synchronization on RHEL system
+    description:
+      - Configure time synchronization on RHEL system
+      - Configure time zone
+      - Optionally restart chronyd service
+    options:
+      # Arguments Specification for the configure_timesync Role
+      - name: restart_chronyd_service
+        required: false
+        description: Boolean to specify if the chronyd service should be restarted after making configuration changes.
+        type: bool
+        default: true
+        example: false
+      - name: user_ntp_servers
+        required: false
+        description: A list of NTP server addresses to use for time synchronization. These can be set by the user, or default values are used.
+        type: list
+        elements: str
+        default:
+          - hostname: '0.rhel.pool.ntp.org'
+          - hostname: '1.rhel.pool.ntp.org'
+          - hostname: '2.rhel.pool.ntp.org'
+          - hostname: '3.rhel.pool.ntp.org'
+        example:
+          - hostname: 'time.example.com'
+          - hostname: 'ntp.example.org'
+          - hostname: 'ntp.example2.org'
+      - name: user_timezone
+        required: false
+        description: Specifies the timezone to set on the server.
+        type: str
+        default: "UTC"
+        example: "America/New_York"

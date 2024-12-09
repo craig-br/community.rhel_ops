@@ -1,0 +1,7 @@
+---
+collections:
+  - name: community.rhel_ops
+    version: 0.1.0
+  # - name: https://github.com/ansible-collections/community.rhel_ops.git
+  #   type: git
+  #   version: main

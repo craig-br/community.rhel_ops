@@ -1,0 +1,49 @@
+---
+# Labels
+#
+controller_labels:
+  - name: community.rhel_ops
+    organization: "{{ organization | default('Default') }}"
+  - name: rhel_pattern
+    organization: "{{ organization | default('Default') }}"
+  - name: run_timesync_configuration
+    organization: "{{ organization | default('Default') }}"
+
+# Execution Environments
+#
+controller_execution_environments:
+  - name: rhel-operations-ee
+    description: Allow running RHEL Ansible Pattern demo. Based on apd-ee-25.
+    image: quay.io/portal_mvp_patterns/community-rhel-ops-ee
+    pull: always
+
+# Projects
+#
+controller_projects:
+  - name: RHEL / Project
+    organization: "{{ organization | default('Default') }}"
+    scm_branch: feature-service-aae
+    scm_clean: false
+    scm_delete_on_update: true
+    scm_type: git
+    scm_update_on_launch: true
+    scm_url: https://github.com/justinc1/experience_demo.git
+
+# Job Templates
+#
+controller_templates:
+  - name: RHEL / Update RHEL Time Servers
+    description: This job template configures RHEL time synchronization
+    ask_inventory_on_launch: true
+    playbook: extensions/patterns/timesync/playbooks/run_timesync_configuration.yml
+    project: RHEL / Project
+    ask_variables_on_launch: false
+    survey_enabled: true
+    labels:
+      - community.rhel_ops
+      - rhel_pattern
+      - run_timesync_configuration
+    # pattern.path - path to setup.yml, it is set by ansible-pattern-loader repo
+    survey_spec: "{{ lookup('file', pattern.path.replace('setup.yml', '') + 'template_surveys/configure_timesync.yml') | from_yaml }}"
+    ask_credential_on_launch: true
+    execution_environment: apd-ee-25-rhel
