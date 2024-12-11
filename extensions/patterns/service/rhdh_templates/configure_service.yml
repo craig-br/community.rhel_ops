@@ -1,0 +1,109 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: rhel-configure-service
+  title: Manage RHEL services
+  description: This wizard will guide you on how to manage selected RHEL services
+  namespace: default
+  tags:
+    - aap-operations
+    - intermediate
+    - rhel
+spec:
+  type: service
+  parameters:
+    - title: Prompts
+      description: >-
+        Select and manage selected RHEL service and verify its status in a job
+        log
+      required:
+        - token
+        - inventory
+        - credentials
+      properties:
+        token:
+          title: Token
+          type: string
+          description: Oauth2 token
+          ui:field: AAPTokenField
+          ui:widget: password
+          ui:backstage:
+            review:
+              show: false
+        inventory:
+          title: Inventory
+          description: Please enter the inventory you want to use the services on
+          resource: inventories
+          ui:field: AAPResourcePicker
+        credentials:
+          title: Credentials
+          description: >-
+            Select credentials for accessing the nodes this job will be ran
+            against. You can only select one credential of each type. For
+            machine credentials (SSH), checking "Prompt on launch" without
+            selecting credentials will require you to select a machine
+            credential at run time. If you select credentials and check "Prompt
+            on launch", the selected credential(s) become the defaults that can
+            be updated at run time.
+          type: array
+          ui:field: AAPResourcePicker
+          resource: credentials
+    - title: Survey
+      description: >-
+        Select and manage selected RHEL service and verify its status in a job
+        log
+      required:
+        - rhelServices
+      properties:
+        rhelServices:
+          title: RHEL Services
+          type: string
+          description: >-
+            Please enter the RHEL service you want to manage, e.g. 'chronyd
+            auditd'.
+          default: chronyd auditd
+          ui:options:
+            rows: 5
+        serviceEnabled:
+          title: Service enabled at boot
+          description: >-
+            Please select whether you want to enable the selected service at
+            boot
+          type: string
+          enum:
+            - ''
+            - 'Yes'
+            - 'No'
+        serviceState:
+          title: Service state at startup
+          description: >-
+            Please select whether you want the selected service to be started or
+            stopped at boot
+          type: string
+          enum:
+            - ''
+            - started
+            - stopped
+  steps:
+    - id: launch-job
+      name: Launch RHEL / Configure Services
+      action: rhaap:launch-job-template
+      input:
+        token: ${{ parameters.token }}
+        values:
+          templateID: null
+          inventory: ${{ parameters.inventory  }}
+          credentials: ${{ parameters.credentials }}
+          extraVariables:
+            service_names_str: ${{ parameters.rhelServices }}
+            service_state: ${{ parameters.serviceState }}
+            service_enabled: ${{ parameters.serviceEnabled }}
+  output:
+    text:
+      - title: Launch RHEL / Configure Services template executed successfully
+        content: |
+          **Job ID:** ${{ steps['launch-job'].output.data.id }}
+          **Job STATUS:** ${{ steps['launch-job'].output.data.status }}
+    links:
+      - title: View in RH AAP
+        url: ${{ steps['launch-job'].output.data.url }}

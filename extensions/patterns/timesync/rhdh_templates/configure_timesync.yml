@@ -1,0 +1,105 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: rhel-update-time-servers
+  title: Manage time servers
+  description: This wizard will guide you on how to manage selected time servers
+  namespace: default
+  tags:
+    - aap-operations
+    - intermediate
+    - rhel
+spec:
+  type: service
+  parameters:
+    - title: Prompts
+      required:
+        - token
+        - inventory
+      properties:
+        token:
+          title: Token
+          type: string
+          description: Oauth2 token
+          ui:field: AAPTokenField
+          ui:widget: password
+          ui:backstage:
+            review:
+              show: false
+        inventory:
+          title: Inventory
+          description: Select inventory
+          resource: inventories
+          ui:field: AAPResourcePicker
+    - title: Survey
+      required:
+        - ntpServers
+        - allHost
+        - serviceRestartConfirmation
+      properties:
+        ntpServers:
+          title: NTP Servers
+          type: string
+          description: >-
+            Provide the list of NTP servers to be configured, e.g.,
+            '0.rhel.pool.ntp.org', '1.rhel.pool.ntp.org'.
+          default: 0.rhel.pool.ntp.org, 1.rhel.pool.ntp.org
+          ui:options:
+            rows: 5
+        timezone:
+          title: Timezone
+          type: string
+          description: >-
+            Specify the timezone for the time server configuration. Default is
+            UTC.
+          default: UTC
+        allHost:
+          title: Apply Changes to All Hosts
+          description: Should these changes be applied to all hosts in the inventory?
+          type: string
+          default: 'Yes'
+          enum:
+            - 'Yes'
+            - 'No'
+        notificationEmail:
+          title: Notification email
+          type: string
+          description: >-
+            Provide an email address to notify when the task completes. Leave
+            blank if no notification is needed.
+          ui:options:
+            rows: 5
+        serviceRestartConfirmation:
+          title: Service Restart Confirmation
+          description: >-
+            Do you want to restart the chronyd service to apply the new
+            configuration?
+          type: string
+          default: 'Yes'
+          enum:
+            - 'Yes'
+            - 'No'
+  steps:
+    - id: launch-job
+      name: RHEL / Update RHEL Time Servers
+      action: rhaap:launch-job-template
+      input:
+        token: ${{ parameters.token }}
+        values:
+          templateID: null
+          inventory: ${{ parameters.inventory }}
+          extraVariables:
+            ntp_servers: ${{ parameters.ntpServers }}
+            timezone: ${{ parameters.timezone }}
+            apply_to_all: ${{ parameters.allHost }}
+            restart_service: ${{ parameters.serviceRestartConfirmation }}
+            notification_email: ${{ parameters.notificationEmail }}
+  output:
+    text:
+      - title: RHEL / Update RHEL Time Servers template executed successfully
+        content: |
+          **Job ID:** ${{ steps['launch-job'].output.data.id }}
+          **Job STATUS:** ${{ steps['launch-job'].output.data.status }}
+    links:
+      - title: View in RH AAP
+        url: ${{ steps['launch-job'].output.data.url }}
