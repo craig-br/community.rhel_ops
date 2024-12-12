@@ -22,12 +22,12 @@ controller_execution_environments:
 controller_projects:
   - name: RHEL / Project
     organization: "{{ organization | default('Default') }}"
-    scm_branch: feature-service-aae
+    scm_branch: main
     scm_clean: false
     scm_delete_on_update: true
     scm_type: git
     scm_update_on_launch: true
-    scm_url: https://github.com/justinc1/experience_demo.git
+    scm_url: https://github.com/ansible-collections/community.rhel_ops.git
 
 # Job Templates
 #
@@ -46,4 +46,4 @@ controller_templates:
     # pattern.path - path to setup.yml, it is set by ansible-pattern-loader repo
     survey_spec: "{{ lookup('file', pattern.path.replace('setup.yml', '') + 'template_surveys/configure_service.yml') | from_yaml }}"
     ask_credential_on_launch: true
-    execution_environment: apd-ee-25-rhel
+    execution_environment: rhel-operations-ee
