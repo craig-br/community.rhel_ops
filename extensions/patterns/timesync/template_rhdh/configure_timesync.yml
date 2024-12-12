@@ -2,7 +2,7 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: rhel-update-time-servers
-  title: Manage time servers
+  title: Manage RHEL time servers
   description: This wizard will guide you on how to manage selected time servers
   namespace: default
   tags:
