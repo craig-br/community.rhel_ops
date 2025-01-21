@@ -6,8 +6,7 @@ metadata:
   description: This wizard will guide you on how to manage selected time servers
   namespace: default
   tags:
-    - aap-operations
-    - intermediate
+    - self-service
     - rhel
 spec:
   type: service
@@ -116,5 +115,8 @@ spec:
           **Job ID:** ${{ steps['launch-job'].output.data.id }}
           **Job STATUS:** ${{ steps['launch-job'].output.data.status }}
     links:
-      - title: View in RH AAP
+      - title: View in Ansible Automation Platform
         url: ${{ steps['launch-job'].output.data.url }}
+      - title: Open in catalog
+        icon: catalog
+        entityRef: ${{ steps['launch-job'].output.entityRef }}
