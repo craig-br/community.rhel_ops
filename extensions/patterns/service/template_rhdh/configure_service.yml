@@ -6,8 +6,7 @@ metadata:
   description: This wizard will guide you on how to manage selected RHEL services
   namespace: default
   tags:
-    - aap-operations
-    - intermediate
+    - self-service
     - rhel
 spec:
   type: service
