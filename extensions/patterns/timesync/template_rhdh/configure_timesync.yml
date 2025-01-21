@@ -6,7 +6,7 @@ metadata:
   description: This wizard will guide you on how to manage selected time servers
   namespace: default
   tags:
-    - self-service
+    - update-time-servers
     - rhel
 spec:
   type: service
@@ -114,9 +114,7 @@ spec:
         content: |
           **Job ID:** ${{ steps['launch-job'].output.data.id }}
           **Job STATUS:** ${{ steps['launch-job'].output.data.status }}
+          ** OUTPUT** ${{ steps['launch-job'].output
     links:
       - title: View in Ansible Automation Platform
         url: ${{ steps['launch-job'].output.data.url }}
-      - title: Open in catalog
-        icon: catalog
-        entityRef: ${{ steps['launch-job'].output.entityRef }}
