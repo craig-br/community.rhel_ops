@@ -8,6 +8,7 @@ metadata:
   tags:
     - update-time-servers
     - rhel
+    - domain-sme
 spec:
   type: service
   parameters:
@@ -74,14 +75,14 @@ spec:
           enum:
             - 'Yes'
             - 'No'
-        notificationEmail:
-          title: Notification email
-          type: string
-          description: >-
-            Provide an email address to notify when the task completes. Leave
-            blank if no notification is needed.
-          ui:options:
-            rows: 5
+        # notificationEmail:
+        #   title: Notification email
+        #   type: string
+        #   description: >-
+        #     Provide an email address to notify when the task completes. Leave
+        #     blank if no notification is needed.
+        #   ui:options:
+        #     rows: 5
         serviceRestartConfirmation:
           title: Service Restart Confirmation
           description: >-
@@ -107,7 +108,7 @@ spec:
             timezone: ${{ parameters.timezone }}
             apply_to_all: ${{ parameters.allHost }}
             restart_service: ${{ parameters.serviceRestartConfirmation }}
-            notification_email: ${{ parameters.notificationEmail }}
+            # notification_email: ${{ parameters.notificationEmail }}
   output:
     text:
       - title: RHEL / Update RHEL Time Servers template executed successfully
