@@ -5,6 +5,9 @@ metadata:
   title: Manage RHEL services
   description: This wizard will guide you on how to manage selected RHEL services
   namespace: default
+  teams:
+    - rhel-operations
+    - domain-smes
   tags:
     - self-service
     - rhel
