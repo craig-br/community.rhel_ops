@@ -9,7 +9,7 @@ metadata:
     - rhel-operations
     - domain-smes
   tags:
-    - self-service
+    - configure-services
     - rhel
 spec:
   type: service
