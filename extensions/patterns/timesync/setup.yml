@@ -28,6 +28,7 @@ controller_projects:
     scm_type: git
     scm_update_on_launch: true
     scm_url: https://github.com/ansible-collections/community.rhel_ops.git
+    credential: "{{ credential | default(omit, true) }}"
 
 # Job Templates
 #
