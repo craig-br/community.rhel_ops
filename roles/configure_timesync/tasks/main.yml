@@ -1,12 +1,20 @@
-- name: Convert NTP servers variable to the required list format
+---
+# tasks file for the role that updates time servers
+
+- name: Initialize an empty list for formatted servers
   ansible.builtin.set_fact:
-    timesync_servers_formatted: >-
-      {{
-        user_ntp_servers.split(',') |
-        map('trim') |
-        map('regex_replace', '^(.*)$', {'hostname': '\\1', 'iburst': true}) |
-        list
-      }}
+    timesync_servers_formatted: []
+
+- name: Prepare the source list of servers
+  ansible.builtin.set_fact:
+    _source_list: "{{ user_ntp_servers.split(',') if user_ntp_servers is string else user_ntp_servers }}"
+
+- name: Build the formatted list of NTP servers
+  ansible.builtin.set_fact:
+    timesync_servers_formatted: "{{ timesync_servers_formatted + [{'hostname': item | trim, 'iburst': true}] }}"
+  loop: "{{ _source_list }}"
+  # This iterative approach is more robust than a single complex Jinja2 expression
+  # and avoids potential parsing errors.
 
 - name: Set Time Server Configuration using the RHEL System Role
   ansible.builtin.include_role:
