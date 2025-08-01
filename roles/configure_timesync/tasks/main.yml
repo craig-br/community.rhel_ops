@@ -1,16 +1,29 @@
----
-- name: Set Time Server Configuration
+- name: Convert NTP servers variable to the required list format
+  ansible.builtin.set_fact:
+    timesync_servers_formatted: >-
+      {{
+        [{'hostname': item | trim, 'iburst': true} for item in user_ntp_servers.split(',')]
+        if ',' in user_ntp_servers
+        else
+        [{'hostname': user_ntp_servers | trim, 'iburst': true}]
+      }}
+  # This task now checks if a comma exists.
+  # If so, it splits the string. If not, it treats it as a single server.
+
+- name: Set Time Server Configuration using the formatted variable
   ansible.builtin.include_role:
     name: redhat.rhel_system_roles.timesync
   vars:
-    timesync_ntp_servers: "{{ user_ntp_servers }}"
+    # Use the newly formatted variable here
+    timesync_ntp_servers: "{{ timesync_servers_formatted }}"
     timesync_timezone: "{{ user_timezone }}"
+    timesync_transactional_update_reboot_ok: "{{ user_timesync_transactional_update_reboot_ok | default(false) }}"
 
-# - name: Restart Chronyd Service to Apply Changes
-#   ansible.builtin.service:
-#     name: chronyd
-#     state: restarted
-#   when: restart_chronyd_service
+- name: Restart Chronyd Service to Apply Changes
+  ansible.builtin.service:
+    name: chronyd
+    state: restarted
+  when: restart_chronyd_service | bool
 
 - name: Print Updated Time Sync Status
   ansible.builtin.command:
